@@ -1,0 +1,4 @@
+Letakkan file CSV dataset (yang sama dengan di notebook) di folder ini.
+Dashboard otomatis membaca file .csv pertama yang ditemukan, lalu menampilkan baris data,
+statistik, outlier, dan hasil encoding langsung dari data Anda.
+Alternatif: unggah lewat sidebar (Unggah CSV dataset).

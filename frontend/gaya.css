@@ -1,0 +1,651 @@
+/* =====================================================================================
+   GAYA.CSS  -  satu-satunya file CSS dashboard
+
+   Isi file dibagi per BAGIAN. Tiap bagian diawali banner "BAGIAN: nama" di bawah ini.
+   Bagian "token" (warna dasar) otomatis ikut dipasang di setiap bagian lain.
+
+     token   : warna dan variabel dasar
+     halaman : seluruh tampilan halaman Streamlit (latar animasi, kartu, tabel, dll.)
+     hero    : animasi judul di atas (iframe)
+     alur    : animasi alur kerja / pipeline (iframe)
+     jaringan: animasi jaringan fitur ke target (iframe)
+
+   Cara baca bagian "halaman":
+     1. Latar belakang animasi      4. Kartu hasil model
+     2. Gerakan dasar (keyframes)   5. Tab Dataset / Fitur / Preprocessing
+     3. Kartu KPI                   6. Aksesibilitas
+   ===================================================================================== */
+
+
+/* ##### BAGIAN: token ##### */
+:root {
+  --indigo: #4f46e5;
+  --violet: #7c3aed;
+  --cyan:   #06b6d4;
+  --sky:    #0ea5e9;
+  --green:  #10b981;
+  --emerald:#059669;
+  --rose:   #f43f5e;
+  --orange: #fb923c;
+  --pink:   #ec4899;
+  --amber:  #f59e0b;
+
+  --teks:        #0f172a;   /* teks gelap utama   */
+  --teks-sedang: #475569;
+  --teks-redup:  #64748b;
+  --garis:       #e2e8f0;
+}
+
+
+/* ##### BAGIAN: halaman ##### */
+
+/* ---------------------------------------------------------------
+   1. LATAR BELAKANG ANIMASI (bertema data science)
+   Enam lapisan, dari atas ke bawah:
+     a. simbol statistik / kode (Σ, μ, σ², 0 1 0 1 ...)  -> bergeser pelan
+     b. scatter plot + garis tren + batang                -> bergeser berlawanan arah
+     c. grid seperti kertas grafik                        -> bergeser pelan
+     d. dua cahaya lembut (ungu dan cyan)                 -> melayang
+     e. gradasi dasar lavender - biru muda                -> bergerak maju mundur
+   Semua lapisan digerakkan oleh satu animasi: latar-data.
+   --------------------------------------------------------------- */
+.stApp,
+[data-testid="stApp"] {
+  --tile-simbol:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' font-family='ui-monospace,Consolas,monospace'%3E%3Ctext x='30' y='60' font-size='26' fill='%234f46e5' fill-opacity='.22'%3E%CE%A3%3C/text%3E%3Ctext x='150' y='40' font-size='15' fill='%234f46e5' fill-opacity='.22'%3E0 1 1 0%3C/text%3E%3Ctext x='330' y='70' font-size='24' fill='%234f46e5' fill-opacity='.22'%3E%CE%BC%3C/text%3E%3Ctext x='60' y='170' font-size='20' fill='%234f46e5' fill-opacity='.22'%3E%CF%83%C2%B2%3C/text%3E%3Ctext x='190' y='150' font-size='14' fill='%234f46e5' fill-opacity='.22'%3ER%C2%B2 = 0,93%3C/text%3E%3Ctext x='350' y='200' font-size='28' fill='%234f46e5' fill-opacity='.22'%3E%E2%88%AB%3C/text%3E%3Ctext x='30' y='290' font-size='14' fill='%234f46e5' fill-opacity='.22'%3Ep %26lt; 0.05%3C/text%3E%3Ctext x='150' y='260' font-size='22' fill='%234f46e5' fill-opacity='.22'%3E%7B %7D%3C/text%3E%3Ctext x='270' y='300' font-size='15' fill='%234f46e5' fill-opacity='.22'%3E1 0 0 1%3C/text%3E%3Ctext x='380' y='360' font-size='22' fill='%234f46e5' fill-opacity='.22'%3E%25%3C/text%3E%3Ctext x='110' y='380' font-size='22' fill='%234f46e5' fill-opacity='.22'%3Ex%CC%84%3C/text%3E%3Ctext x='230' y='400' font-size='14' fill='%234f46e5' fill-opacity='.22'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E");
+  --tile-scatter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='300'%3E%3Cpolyline points='20,255 120,200 220,150 320,110 440,45' fill='none' stroke='%237c3aed' stroke-opacity='.22' stroke-width='2' stroke-dasharray='6 6'/%3E%3Ccircle cx='18' cy='223' r='2.5' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='32' cy='246' r='3.5' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='50' cy='236' r='2.5' fill='%2306b6d4' fill-opacity='.30'/%3E%3Ccircle cx='72' cy='196' r='3.5' fill='%2306b6d4' fill-opacity='.30'/%3E%3Ccircle cx='89' cy='246' r='2.5' fill='%2306b6d4' fill-opacity='.30'/%3E%3Ccircle cx='109' cy='220' r='3.5' fill='%2306b6d4' fill-opacity='.30'/%3E%3Ccircle cx='126' cy='173' r='2.5' fill='%2306b6d4' fill-opacity='.30'/%3E%3Ccircle cx='143' cy='172' r='2.5' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='160' cy='198' r='3.5' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='174' cy='191' r='2.5' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='193' cy='182' r='3.5' fill='%2306b6d4' fill-opacity='.30'/%3E%3Ccircle cx='207' cy='148' r='3.5' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='229' cy='149' r='3' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='246' cy='137' r='3.5' fill='%2306b6d4' fill-opacity='.30'/%3E%3Ccircle cx='268' cy='117' r='3.5' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='282' cy='130' r='3' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='301' cy='102' r='3' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='313' cy='116' r='3' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='329' cy='133' r='3.5' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='356' cy='137' r='3.5' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='368' cy='106' r='2.5' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='392' cy='133' r='3.5' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='407' cy='58' r='3' fill='%234f46e5' fill-opacity='.30'/%3E%3Ccircle cx='424' cy='122' r='3' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='443' cy='107' r='2.5' fill='%237c3aed' fill-opacity='.30'/%3E%3Ccircle cx='463' cy='59' r='2.5' fill='%234f46e5' fill-opacity='.30'/%3E%3Crect x='330' y='250' width='12' height='30' rx='3' fill='%2310b981' fill-opacity='.15'/%3E%3Crect x='352' y='225' width='12' height='55' rx='3' fill='%2310b981' fill-opacity='.15'/%3E%3Crect x='374' y='238' width='12' height='42' rx='3' fill='%2310b981' fill-opacity='.15'/%3E%3Crect x='396' y='202' width='12' height='78' rx='3' fill='%2310b981' fill-opacity='.15'/%3E%3Crect x='418' y='220' width='12' height='60' rx='3' fill='%2310b981' fill-opacity='.15'/%3E%3Crect x='440' y='185' width='12' height='95' rx='3' fill='%2310b981' fill-opacity='.15'/%3E%3C/svg%3E");
+
+  background-color: #eef2ff !important;
+  background-image:
+    var(--tile-simbol),
+    var(--tile-scatter),
+    linear-gradient(rgba(79, 70, 229, .07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 70, 229, .07) 1px, transparent 1px),
+    radial-gradient(circle at 20% 25%, rgba(124, 58, 237, .20), transparent 42%),
+    radial-gradient(circle at 80% 75%, rgba(6, 182, 212, .20), transparent 42%),
+    linear-gradient(135deg, #eef2ff 0%, #e0f2fe 45%, #f5f3ff 100%) !important;
+  background-size:
+    420px 420px,
+    480px 300px,
+    48px 48px,
+    48px 48px,
+    160% 160%,
+    160% 160%,
+    300% 300% !important;
+  background-repeat:
+    repeat, repeat, repeat, repeat, no-repeat, no-repeat, no-repeat !important;
+  animation: latar-data 60s linear infinite;
+}
+
+/* Header dan wadah utama dibuat bening agar latar terlihat */
+[data-testid="stHeader"],
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"] {
+  background: transparent !important;
+}
+
+/* Isi tab diberi lapisan putih tipis agar teks dan grafik tetap mudah dibaca */
+div[data-baseweb="tab-panel"] {
+  background: rgba(255, 255, 255, .55);
+  border-radius: 18px;
+  padding: 1rem 1.25rem 1.5rem;
+  animation: naik .55s ease both;
+}
+
+@keyframes latar-data {
+  /* urutan posisi mengikuti urutan lapisan di atas */
+  0%   { background-position:   0 0,     0 0,      0 0,   0 0,   0% 0%,     100% 100%, 0% 50%; }
+  50%  { background-position: 420px 420px, -480px 300px, 48px 48px, 48px 48px, 100% 100%, 0% 0%,     100% 50%; }
+  100% { background-position: 840px 840px, -960px 600px, 96px 96px, 96px 96px, 0% 0%,     100% 100%, 0% 50%; }
+}
+
+
+/* ---------------------------------------------------------------
+   2. GERAKAN DASAR (dipakai berbagai komponen)
+   --------------------------------------------------------------- */
+@keyframes naik {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes denyut {
+  0%   { box-shadow: 0 0 0 0 rgba(244, 63, 94, .5); }
+  70%  { box-shadow: 0 0 0 22px rgba(244, 63, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+@keyframes goyang {
+  0%, 100% { transform: rotate(0); }
+  25%      { transform: rotate(-8deg); }
+  75%      { transform: rotate(8deg); }
+}
+@keyframes isi {
+  to { width: var(--w); }
+}
+
+/* Gradasi warna yang dipakai kartu (g0 - g4) */
+.g0 { background: linear-gradient(135deg, var(--indigo), var(--violet)); }
+.g1 { background: linear-gradient(135deg, var(--sky), var(--cyan)); }
+.g2 { background: linear-gradient(135deg, var(--rose), var(--orange)); }
+.g3 { background: linear-gradient(135deg, var(--violet), var(--pink)); }
+.g4 { background: linear-gradient(135deg, var(--emerald), var(--cyan)); }
+
+
+/* ---------------------------------------------------------------
+   3. KARTU KPI (angka besar berwarna)
+   --------------------------------------------------------------- */
+.kpi {
+  border-radius: 18px;
+  padding: 16px 18px;
+  color: #fff;
+  min-height: 120px;
+  margin-bottom: 6px;
+  animation: naik .6s ease both;
+  transition: transform .25s, box-shadow .25s;
+}
+.kpi:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 18px 36px rgba(79, 70, 229, .35);
+}
+.kpi .v { display: block; font-size: 28px; font-weight: 700; line-height: 1.1; }   /* nilai  */
+.kpi .n { display: block; font-weight: 600; margin-top: 4px; }                     /* nama   */
+.kpi .d { display: block; font-size: 13px; opacity: .94; line-height: 1.35; }      /* ket.   */
+
+
+/* ---------------------------------------------------------------
+   4. KARTU HASIL MODEL (tab Evaluasi dan Simulator)
+   --------------------------------------------------------------- */
+
+/* Rumus kecil */
+.formula {
+  display: inline-block;
+  background: #eef2ff;
+  color: #4338ca;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+/* Catatan peringatan (recall rendah) */
+.alert-g {
+  padding: 16px 20px;
+  border-radius: 16px;
+  border-left: 6px solid var(--rose);
+  background: linear-gradient(135deg, #ffe4e6, #fff7ed);
+  color: var(--teks);
+}
+
+/* Suara tiap stump di simulator */
+.vote {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--teks);
+}
+.vote.yes { background: linear-gradient(90deg, #d1fae5, #ecfdf5); }
+.vote.no  { background: linear-gradient(90deg, #ffe4e6, #fff1f2); }
+
+/* Keputusan akhir simulator */
+.verdict {
+  padding: 16px 20px;
+  border-radius: 16px;
+  color: #fff;
+  margin-top: 10px;
+}
+.verdict.yes { background: linear-gradient(135deg, var(--emerald), var(--green)); }
+.verdict.no  { background: linear-gradient(135deg, #e11d48, #fb7185); }
+
+/* Confusion matrix */
+.cm {
+  display: grid;
+  grid-template-columns: 110px 1fr 1fr;
+  gap: 8px;
+  align-items: stretch;
+}
+.cm-h {                                   /* label baris / kolom */
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--teks-redup);
+}
+.cm-cell {                                /* satu kotak angka */
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+  color: #fff;
+}
+.cm-cell b    { display: block; font-size: 22px; }
+.cm-cell span { font-size: 12px; opacity: .95; }
+
+
+/* ---------------------------------------------------------------
+   5. TAB DATASET / FITUR / PREPROCESSING
+   --------------------------------------------------------------- */
+
+/* Kartu target (Revenue) dengan ikon berdenyut */
+.tcard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  padding: 22px 24px;
+  margin: 8px 0 18px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fff1f2, #fff7ed);
+  border: 1px solid #fecdd3;
+  color: var(--teks);
+  animation: naik .6s both;
+}
+.tcard h3 { margin: 0 0 4px; font-size: 22px; }
+.tcard p  { margin: 0 0 12px; color: var(--teks-sedang); }
+
+.ticon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  font-size: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose), var(--orange));
+  box-shadow: 0 0 0 0 rgba(244, 63, 94, .5);
+  animation: denyut 2.2s infinite;
+}
+
+/* Bar proporsi kelas (isi bar tumbuh saat tampil) */
+.bar {
+  display: flex;
+  height: 30px;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.bar i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  font-style: normal;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  animation: isi 1.6s .2s ease forwards;
+}
+.b0 { background: linear-gradient(90deg, var(--indigo), var(--violet)); }
+.b1 { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+/* Lencana kelompok fitur */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.chip {
+  padding: 4px 14px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--c);
+}
+
+/* Kartu fitur (satu kartu per kolom dataset) */
+.fgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.fcard {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #fff;
+  color: var(--teks);
+  border: 1px solid var(--garis);
+  border-top: 5px solid var(--c);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, .06);
+  animation: naik .6s both;
+  transition: transform .25s, box-shadow .25s;
+}
+.fcard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 34px rgba(79, 70, 229, .2);
+}
+.fcard b     { font-size: 15px; }
+.fcard small { display: block; margin: 2px 0 6px; color: var(--teks-redup); }
+.fcard p     { margin: 0 0 4px; font-size: 13.5px; line-height: 1.4; }
+.fcard .pl   { font-size: 12.5px; color: var(--teks-redup); }      /* perlakuan */
+.fcard em {                                                         /* lencana kecil */
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 99px;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--c);
+}
+.fic {                                                              /* ikon fitur */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 52px;
+  font-size: 26px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--c) 16%, white);
+  animation: goyang 4s ease-in-out infinite;
+}
+
+
+/* ---------------------------------------------------------------
+   6. AKSESIBILITAS: matikan semua animasi bila perangkat memintanya
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; }
+}
+
+
+/* ##### BAGIAN: hero ##### */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, system-ui, sans-serif; background: transparent; }
+
+/* Kotak utama dengan gradasi bergerak */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+  padding: 34px 34px 28px;
+  border-radius: 30px;
+  color: #fff;
+  background: linear-gradient(120deg, var(--indigo), var(--violet), var(--cyan), var(--indigo));
+  background-size: 300% 300%;
+  animation: geser 14s ease infinite;
+  box-shadow: 0 18px 50px rgba(79, 70, 229, .35);
+}
+@keyframes geser {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Dua lingkaran cahaya di sudut */
+.hero:before, .hero:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero:before {
+  width: 420px; height: 420px; right: -130px; top: -150px;
+  background: radial-gradient(circle, rgba(255, 255, 255, .3), transparent 70%);
+}
+.hero:after {
+  width: 340px; height: 340px; left: -110px; bottom: -170px;
+  background: radial-gradient(circle, rgba(244, 63, 94, .45), transparent 70%);
+}
+
+/* Teks */
+.tag {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 4px 14px;
+  border-radius: 99px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, .2);
+  border: 1px solid rgba(255, 255, 255, .4);
+}
+h1 {
+  position: relative;
+  z-index: 2;
+  max-width: 11em;
+  font-family: Outfit, Inter, sans-serif;
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+}
+.lead {
+  position: relative;
+  z-index: 2;
+  max-width: 46ch;
+  margin-top: 12px;
+  font-size: 17px;
+  opacity: .95;
+}
+.nama {
+  position: relative;
+  z-index: 2;
+  margin-top: 14px;
+  font-size: 13px;
+  opacity: .85;
+}
+
+/* Jaringan simpul di kanan: garis mengalir, ikon melayang */
+.net { position: absolute; right: 0; top: 0; z-index: 1; width: 100%; height: 290px; }
+.net svg { width: 100%; height: 100%; }
+.gr {
+  stroke: rgba(255, 255, 255, .75);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 6;
+  vector-effect: non-scaling-stroke;
+  animation: alir 1.4s linear infinite;
+}
+@keyframes alir { to { stroke-dashoffset: -20; } }
+
+.ik {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  font-size: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .2);
+  border: 1px solid rgba(255, 255, 255, .55);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .25);
+  transform: translate(-50%, -50%);
+  animation: melayang 5s ease-in-out infinite;
+}
+@keyframes melayang {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(1); }
+  50%      { transform: translate(-50%, -50%) translateY(-12px) scale(1.07); }
+}
+
+/* Empat kotak statistik di bawah */
+.stats {
+  position: absolute;
+  left: 34px; right: 34px; bottom: 26px;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+}
+.st {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .17);
+  border: 1px solid rgba(255, 255, 255, .4);
+  backdrop-filter: blur(10px);
+  animation: naik .8s both;
+}
+.st:nth-child(2) { animation-delay: .1s; }
+.st:nth-child(3) { animation-delay: .2s; }
+.st:nth-child(4) { animation-delay: .3s; }
+@keyframes naik {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+.st b {
+  display: block;
+  font-family: Outfit, sans-serif;
+  font-size: 26px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.st span { font-size: 13px; opacity: .93; }
+
+@media (max-width: 700px) {
+  .net  { opacity: .35; }
+  .hero { min-height: 470px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; }
+}
+
+
+/* ##### BAGIAN: alur ##### */
+/* Nilai __TOTAL__, __P85__ dan __P100__ diisi oleh animasi.py (bergantung jumlah tahap) */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, system-ui, sans-serif; background: transparent; }
+
+.wrap {
+  position: relative;
+  padding: 34px 18px 18px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  border: 1px solid #e0e7ff;
+  box-shadow: 0 10px 30px rgba(79, 70, 229, .12);
+}
+.rel { position: relative; }
+
+/* Garis jalur dan isinya yang memanjang */
+.garis {
+  position: absolute;
+  left: 5%; right: 5%; top: 34px;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--garis);
+  overflow: hidden;
+}
+.garis i {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: linear-gradient(90deg, var(--indigo), var(--violet), var(--cyan));
+  animation: isi __TOTAL__ linear infinite;
+}
+@keyframes isi {
+  0%   { width: 0; }
+  92%  { width: 100%; }
+  100% { width: 100%; }
+}
+
+/* Titik yang berjalan di sepanjang jalur */
+.dot {
+  position: absolute;
+  top: 28px; left: 5%;
+  width: 18px; height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid var(--violet);
+  box-shadow: 0 0 0 6px rgba(124, 58, 237, .2);
+  animation: jalan __TOTAL__ linear infinite;
+}
+@keyframes jalan {
+  0%   { left: 5%; }
+  92%  { left: 95%; }
+  100% { left: 95%; }
+}
+
+/* Lingkaran tahap: menyala bergantian */
+.steps { position: relative; display: flex; justify-content: space-between; gap: 6px; }
+.s { flex: 1; text-align: center; font-size: 12.5px; font-weight: 600; color: var(--teks-sedang); }
+.s span { display: block; }
+.b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px; height: 68px;
+  margin: 0 auto 8px;
+  font-size: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #c7d2fe;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, .1);
+  animation: nyala __TOTAL__ ease infinite;
+}
+@keyframes nyala {
+  0%        { transform: scale(1.22); background: linear-gradient(135deg, #e0e7ff, #cffafe);
+              border-color: var(--violet); box-shadow: 0 0 0 8px rgba(124, 58, 237, .2); }
+  __P85__%  { transform: scale(1.15); border-color: var(--violet); }
+  __P100__% { transform: scale(1); background: #fff; border-color: #c7d2fe;
+              box-shadow: 0 6px 16px rgba(15, 23, 42, .1); }
+  100%      { transform: scale(1); }
+}
+
+@media (max-width: 640px) {
+  .b { width: 44px; height: 44px; font-size: 20px; }
+  .s { font-size: 10px; }
+  .garis { top: 24px; }
+  .dot { top: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; }
+}
+
+
+/* ##### BAGIAN: jaringan ##### */
+* { margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: Inter, system-ui, sans-serif; background: transparent; }
+
+.box {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 6px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  border: 1px solid #e0e7ff;
+  box-shadow: 0 10px 30px rgba(79, 70, 229, .12);
+}
+svg { width: 100%; height: 100%; display: block; }
+
+/* Garis dari fitur ke target: putus-putus mengalir */
+.alir { stroke-dasharray: 10 8; animation: alir 1.2s linear infinite; }
+@keyframes alir { to { stroke-dashoffset: -36; } }
+
+/* Simpul fitur "bernapas" */
+.nd { transform-box: fill-box; transform-origin: center; animation: napas 4s ease-in-out infinite; }
+@keyframes napas {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.07); }
+}
+
+/* Label nama fitur dan persennya */
+.lb, .pc {
+  paint-order: stroke;
+  stroke: #f1f5ff;
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+.lb { font-size: 11.5px; font-weight: 600; fill: #1e293b; }
+.pc { font-size: 11px;   font-weight: 600; fill: var(--indigo); }
+
+/* Target di tengah: berdenyut dan memancarkan gelombang */
+.pusat { transform-box: fill-box; transform-origin: center; animation: denyut 2.4s ease-in-out infinite; }
+@keyframes denyut {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+.ring {
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gelombang 2.4s ease-out infinite;
+}
+@keyframes gelombang {
+  from { opacity: .7; transform: scale(1); }
+  to   { opacity: 0;  transform: scale(1.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; }
+}
